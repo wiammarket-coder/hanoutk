@@ -1,0 +1,71 @@
+INSERT 0 2
+              set_config              
+--------------------------------------
+ 11111111-1111-1111-1111-111111111111
+(1 row)
+
+              set_config              
+--------------------------------------
+ 22222222-2222-2222-2222-222222222222
+(1 row)
+
+psql:/workspace/mallah/scripts/test-multitenancy.sql:28: NOTICE:  OK: إنشاء المتجر والملف تلقائيًا (stores=2, profiles=2)
+DO
+INSERT 0 1
+INSERT 0 1
+INSERT 0 2
+psql:/workspace/mallah/scripts/test-multitenancy.sql:57: NOTICE:  OK: العامل انضمّ إلى محل ألف بدعوة (دور staff)
+DO
+SET
+              set_config              
+--------------------------------------
+ 11111111-1111-1111-1111-111111111111
+(1 row)
+
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+              set_config              
+--------------------------------------
+ 22222222-2222-2222-2222-222222222222
+(1 row)
+
+INSERT 0 1
+              set_config              
+--------------------------------------
+ 11111111-1111-1111-1111-111111111111
+(1 row)
+
+psql:/workspace/mallah/scripts/test-multitenancy.sql:99: NOTICE:  OK: عزل القراءة — مالك ألف يرى 1 منتج و1 زبون و1 مصروف فقط
+DO
+psql:/workspace/mallah/scripts/test-multitenancy.sql:124: NOTICE:  OK: رُفضت الكتابة في محل آخر (غير مصرّح: لا يمكن الكتابة في بيانات محل آخر)
+psql:/workspace/mallah/scripts/test-multitenancy.sql:124: NOTICE:  OK: التحديث على بيانات محل آخر لا يؤثر
+DO
+              set_config              
+--------------------------------------
+ 33333333-3333-3333-3333-333333333333
+(1 row)
+
+psql:/workspace/mallah/scripts/test-multitenancy.sql:168: NOTICE:  OK: العامل لا يرى مصاريف المحل
+psql:/workspace/mallah/scripts/test-multitenancy.sql:168: NOTICE:  OK: رُفض تعديل الكمية من العامل
+psql:/workspace/mallah/scripts/test-multitenancy.sql:168: NOTICE:  OK: رُفض تعديل سعر الشراء من العامل
+psql:/workspace/mallah/scripts/test-multitenancy.sql:168: NOTICE:  OK: رُفض ترقية العامل إلى مالك
+DO
+psql:/workspace/mallah/scripts/test-multitenancy.sql:202: NOTICE:  OK: البيع محسوب من القاعدة — مخزون=38.00, تكلفة=240.00, إجمالي=500.00, باقي=0.00
+DO
+psql:/workspace/mallah/scripts/test-multitenancy.sql:219: NOTICE:  OK: رُفض حذف المنتج من العامل (العدد بقي 1) 
+DO
+RESET
+SET
+              set_config              
+--------------------------------------
+ 22222222-2222-2222-2222-222222222222
+(1 row)
+
+psql:/workspace/mallah/scripts/test-multitenancy.sql:242: NOTICE:  OK: مالك باء يرى 1 منتج و0 فاتورة فقط
+DO
+RESET
+
+==========================================================
+  نجح: كل اختبارات عزل المحلات والمزامنة
+==========================================================
